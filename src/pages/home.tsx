@@ -22,6 +22,7 @@ const modalStyles = {
     }
 };
 
+Modal.setAppElement('#root')
 export function Home() {
     const [users, setUsers] = useState<IUser[]>([]);
     const [albums, setAlbums] = useState([]);
@@ -80,7 +81,6 @@ export function Home() {
 
     if (loading) return (<div>loading...</div>)
     if (error.message) return (<div>{error.message}</div>)
-
     return (
         <StyledHome>
             <h2>
@@ -94,9 +94,9 @@ export function Home() {
                     </div>
                     <div>
                         {
-                            albums.map((album: any) => (
+                            albums.map((album: any, index) => (
                                 <div key={album.id}>
-                                    <b>{album.id}. </b>
+                                    <b>{index+1}. </b>
                                     {album.title}
                                 </div>
                             ))
