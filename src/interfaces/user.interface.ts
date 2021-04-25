@@ -3,5 +3,6 @@ export interface IUser {
     phone: string,
     website: string,
     username: string,
-    email: string
+    email: string,
+    id: string
 }

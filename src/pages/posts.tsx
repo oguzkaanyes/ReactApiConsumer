@@ -2,37 +2,18 @@ import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router"
 import styled from "styled-components";
 import { IPost } from "../interfaces/post.interface";
-import { Get } from "../services/rest-service";
-import commentIcon from '../comments.png';
+import { get } from "../services/rest-service";
+import { PostCard } from "./post-card";
+
 const StyledPosts = styled.section`
     width: 60%;
     margin: 0 auto;
     padding: 15px;
-    .post-container {
-        box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
-        padding: 20px;
-        display: flex;
-        margin-bottom: 1rem;
-        flex-direction: column;
-        .title, .body {
-            margin-bottom: 1rem;
-        }
-        .footer {
-            border-top: 2px solid #f2f2f2;
-            padding: 15px 0;
-            display: flex;
-            div{
-                display: inline-block;
-                margin-left: auto;
-                cursor: pointer;
-            }
-        }
-    }
 `;
 
 export function Posts() {
     const { userId } = useParams<{ userId: string }>();
-    const [posts, setPosts] = useState<IPost[]>([])
+    const [posts, setPosts] = useState<IPost[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<any>({});
 
@@ -44,7 +25,7 @@ export function Posts() {
     }, [])
 
     const getPosts = useCallback(() => {
-        return Get(`users/${userId}/posts`);
+        return get(`users/${userId}/posts`);
     }, []);
 
     if (loading) return (<div>...loading</div>)
@@ -59,26 +40,10 @@ export function Posts() {
             </div>
             {
                 posts.map(post => (
-                    <div key={post.id} className="post-container">
-                        <div className="title">
-                            <b>Title:</b> {post.title}
-                        </div>
-                        <div className="body">
-                            <b>Body:</b> {post.body}
-                        </div>
-                        <div className="footer">
-                            <div onClick={openAlbums}>
-                                <img src={commentIcon} width="32" alt="comment-icon" />
-                            </div>
-                        </div>
-                    </div>
+                    <PostCard key={post.id} post={post} />
                 ))
             }
 
         </StyledPosts>
     )
-}
-function openAlbums() {
-    console.log("deneme");
-    
 }
